@@ -7,8 +7,14 @@ from flask_login import *
 app = Flask(__name__)
 
 # Configuration
-app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
+app.config["SECRET_KEY"] = os.getenv(
+    "SECRET_KEY",
+    "dev-secret-key"
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL",
+    "sqlite:///database.db"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 from db import db
@@ -181,4 +187,9 @@ def logout():
 with app.app_context():
     db.create_all()
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=True
+    )
