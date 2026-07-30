@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Care - Submit Report</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#c0ded9] min-h-screen flex flex-col font-sans antialiased text-gray-800">
+
+    <!-- Navigation Bar -->
+    <nav id="nav" class="bg-[#3b3a30] text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="font-extrabold text-2xl tracking-wider">
+                <span class="text-white">CITY</span><span class="text-[#b2c2bf]">CARE</span>
+            </a>
+            <ul class="flex items-center space-x-6 font-medium">
+                <li>
+                    <a href="#" class="px-4 py-2 rounded-lg bg-red-400 hover:bg-red-500 text-white font-semibold transition duration-200 shadow-sm">
+                        Report Issue
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="main" class="flex-grow flex items-center justify-center p-6 my-6">
+        <div class="bg-white/80 backdrop-blur-md p-8 md:p-10 rounded-2xl shadow-xl max-w-2xl w-full border border-white/40">
+            <h1 class="text-3xl font-extrabold text-[#3b3a30] mb-3 text-center tracking-tight">
+                SUBMIT A REPORT
+            </h1>
+            <p class="text-gray-600 mb-8 text-center leading-relaxed max-w-md mx-auto">
+                Help us keep our city clean and safe. Select an issue type and provide details for the municipality to address.
+            </p>
+
+            <!-- Functional Issue Submission Form -->
+            <form id="reportForm" class="space-y-5 text-left">
+                <div>
+                    <label for="type" class="block text-sm font-bold text-[#3b3a30] mb-1">
+                        Report Type <span class="text-red-500">*</span>
+                    </label>
+                    <select 
+                        id="type" 
+                        required 
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3b3a30] bg-white transition duration-150"
+                    >
+                        <option value="">Select...</option>
+                        <option value="Roadwork">Roadwork</option>
+                        <option value="Streetlight Problem">Streetlight Problem</option>
+                        <option value="Garbage">Garbage</option>
+                        <option value="Water Leak">Water Leak</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="text" class="block text-sm font-bold text-[#3b3a30] mb-1">
+                        Description <span class="text-red-500">*</span>
+                    </label>
+                    <textarea 
+                        id="text" 
+                        rows="5" 
+                        placeholder="Describe the problem in detail..." 
+                        required 
+                        class="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#3b3a30] bg-white transition duration-150"
+                    ></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button 
+                        type="submit" 
+                        class="w-full bg-[#3b3a30] text-white font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-[#2a2922] transition duration-200 cursor-pointer"
+                    >
+                        Submit Report
+                    </button>
+                </div>
+            </form>
+
+            <!-- Async Feedback Target for report.js -->
+            <p id="status" class="mt-4 text-center text-sm font-semibold text-gray-700 min-h-[20px]"></p>
+        </div>
+    </main>
+
+    
+    <!-- JavaScript Script -->
+    <script src="{{ url_for('static', filename='report.js') }}"></script>
+    
+    <!-- Footer -->
+    <footer class="bg-[#2c2b24] text-gray-300 pt-12 pb-8 border-t-2 border-[#b2c2bf]/30 mt-auto">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Main Grid Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-6 pb-6 border-b border-gray-700/60">
+                
+                <!-- Column 1: Brand & Logo -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <img id="CityCareLogo" 
+                             src="{{ url_for('static', filename='LOGO-CITYCARE.png') }}" 
+                             alt="City Care Logo" 
+                             class="h-10 w-auto object-contain">
+                    </div>
+                    <!-- Font bumped to text-base -->
+                    <p class="text-base text-gray-300 leading-relaxed">
+                        Empowering citizens to build better, cleaner, and safer neighborhoods through transparent municipal reporting.
+                    </p>
+                    <!-- Badge text bumped to text-sm -->
+                    <div class="flex items-center gap-2 text-sm text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 w-max px-3.5 py-1.5 rounded-full">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Municipal Services Active
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <!-- Section header bumped to text-sm -->
+                    <h4 class="text-white font-bold mb-4 tracking-wide uppercase text-sm text-[#b2c2bf]">Navigation</h4>
+                    <!-- Link list bumped to text-base -->
+                    <ul class="space-y-2.5 text-base">
+                        <li><a href="#" class="hover:text-white transition-colors duration-150 flex items-center gap-2"><span class="text-[#b2c2bf] text-sm">›</span> Report an Issue</a></li>
+                        <li><a href="#reports-feed" class="hover:text-white transition-colors duration-150 flex items-center gap-2"><span class="text-[#b2c2bf] text-sm">›</span> Recent Reports</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-150 flex items-center gap-2"><span class="text-[#b2c2bf] text-sm">›</span> Community Board</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors duration-150 flex items-center gap-2"><span class="text-[#b2c2bf] text-sm">›</span> Track Status</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Contact & Help -->
+                <div>
+                    <!-- Section header bumped to text-sm -->
+                    <h4 class="text-white font-bold mb-4 tracking-wide uppercase text-sm text-[#b2c2bf]">Emergency Contacts</h4>
+                    <!-- Contact details bumped to text-base / text-sm -->
+                    <ul class="space-y-3 text-base">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-phone text-sm text-[#b2c2bf] mt-1"></i>
+                            <span>City Helpline: <strong class="text-white">1800-CITY-CARE</strong></span>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-envelope text-sm text-[#b2c2bf] mt-1"></i>
+                            <a href="mailto:support@citycare.gov" class="hover:text-white underline underline-offset-4 decoration-gray-600">support@citycare.gov</a>
+                        </li>
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-clock text-sm text-[#b2c2bf] mt-1"></i>
+                            <span class="text-sm text-gray-300">Response Window: Mon-Sat, 8am-8pm</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Official Social Handles -->
+                <div>
+                    <!-- Section header bumped to text-sm -->
+                    <h4 class="text-white font-bold mb-4 tracking-wide uppercase text-sm text-[#b2c2bf]">Connect With Us</h4>
+                    <!-- Subtext bumped to text-sm -->
+                    <p class="text-sm text-gray-300 mb-3">Follow official updates on infrastructure and resolution stats:</p>
+                    
+                    <div class="space-y-2.5">
+                        <!-- Twitter/X -->
+                        <a href="https://x.com/yourusername" 
+                           target="_blank" 
+                           class="flex items-center gap-3 bg-[#3b3a30]/80 hover:bg-[#c0ded9] hover:text-[#3b3a30] text-white px-4 py-2.5 rounded-xl transition duration-200 border border-white/5 group">
+                            <i class="fa-brands fa-x-twitter text-lg group-hover:scale-110 transition-transform duration-200"></i>
+                            <span class="text-sm font-semibold">@indore.citycare_</span>
+                        </a>
+
+                        <!-- Instagram -->
+                        <a href="https://instagram.com/yourusername" 
+                           target="_blank" 
+                           class="flex items-center gap-3 bg-[#3b3a30]/80 hover:bg-[#c0ded9] hover:text-[#3b3a30] text-white px-4 py-2.5 rounded-xl transition duration-200 border border-white/5 group">
+                            <i class="fa-brands fa-instagram text-lg group-hover:scale-110 transition-transform duration-200"></i>
+                            <span class="text-sm font-semibold">@_citycareindore_</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </footer>
+
+
+</body>
+</html>

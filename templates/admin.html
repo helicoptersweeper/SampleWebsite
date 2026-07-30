@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Care - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-[#c0ded9] min-h-screen flex flex-col font-sans antialiased text-gray-800">
+
+<!-- Navigation Header -->
+<header class="bg-[#3b3a30] text-white shadow-md sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <a href="{{ url_for('home') }}" class="font-extrabold text-2xl tracking-wider">
+            <span class="text-white">CITY</span><span class="text-[#b2c2bf]">CARE</span>
+            <span class="text-xs font-semibold uppercase tracking-widest text-teal-300 ml-2 bg-white/10 px-2 py-1 rounded">Admin</span>
+        </a>
+        
+        <nav class="flex items-center space-x-6 text-sm font-semibold">
+            <a href="/" class="text-[#b2c2bf] hover:text-white transition duration-150">Home</a>
+            <a href="{{ url_for('home') }}" class="text-[#b2c2bf] hover:text-white transition duration-150">Dashboard Main</a>
+            <a href="/login" class="px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-lg shadow-sm font-bold transition duration-150">Login</a>
+        </nav>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 flex-grow w-full">
+
+{% for post in posts %}
+
+<div class="bg-white/90 backdrop-blur-md border border-white/60 rounded-2xl p-6 sm:p-8 shadow-md transition hover:shadow-lg">
+
+    <!-- Card Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 mb-6 border-b border-gray-200">
+        <h3 class="text-xl sm:text-2xl font-bold text-[#3b3a30]">{{ post.report_type }}</h3>
+        <span class="text-xs font-semibold px-3 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-200 w-fit">
+            Post ID: #{{ post.id }}
+        </span>
+    </div>
+
+    <!-- Metadata Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 bg-white/60 p-4 rounded-xl border border-gray-200/80 text-sm">
+        <p>
+            <strong class="text-gray-500 block text-xs uppercase tracking-wider">Reported by</strong>
+            <span class="font-medium text-gray-800">{{ post.author.username }}</span>
+        </p>
+
+        <p>
+            <strong class="text-gray-500 block text-xs uppercase tracking-wider">Date</strong>
+            <span class="font-medium text-gray-800">{{ post.created_at.strftime("%d %b %Y %H:%M") }}</span>
+        </p>
+
+        <p>
+            <strong class="text-gray-500 block text-xs uppercase tracking-wider">Upvotes</strong>
+            <span class="inline-flex items-center font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded text-xs">
+                ▲ {{ post.upvotes }}
+            </span>
+        </p>
+
+        <p>
+            <strong class="text-gray-500 block text-xs uppercase tracking-wider">Latitude</strong>
+            <span class="font-mono text-gray-700">{{ post.latitude }}</span>
+        </p>
+
+        <p>
+            <strong class="text-gray-500 block text-xs uppercase tracking-wider">Longitude</strong>
+            <span class="font-mono text-gray-700">{{ post.longitude }}</span>
+        </p>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-6">
+        <strong class="text-[#3b3a30] text-sm block mb-1 font-bold">Description</strong>
+        <p class="text-gray-700 bg-white p-4 rounded-xl border border-gray-200 text-sm sm:text-base leading-relaxed">
+            {{ post.text }}
+        </p>
+    </div>
+
+    {% if post.authority_response %}
+        <!-- Current Community Response Box -->
+        <div class="mb-6 p-4 bg-teal-50 border-l-4 border-teal-600 rounded-r-xl">
+            <strong class="text-teal-800 text-xs uppercase tracking-wider block mb-1">Current Community Response</strong>
+            <p class="text-teal-950 text-sm sm:text-base">{{ post.authority_response }}</p>
+        </div>
+    {% endif %}
+
+    <hr class="border-gray-200 my-6">
+
+    <!-- Response Form -->
+    <form method="POST" action="{{ url_for('respond', post_id=post.id) }}" class="space-y-4">
+
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+            <label class="font-bold text-sm text-[#3b3a30] sm:w-24">Status</label>
+
+            <select 
+                name="status"
+                class="w-full sm:w-auto px-4 py-2 rounded-xl border border-gray-300 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#3b3a30] text-sm font-medium transition duration-200"
+            >
+                <option value="Pending" {% if post.status == "Pending" %}selected{% endif %}>
+                    Pending
+                </option>
+                <option value="In Progress" {% if post.status == "In Progress" %}selected{% endif %}>
+                    In Progress
+                </option>
+                <option value="Resolved" {% if post.status == "Resolved" %}selected{% endif %}>
+                    Resolved
+                </option>
+                <option value="Rejected" {% if post.status == "Rejected" %}selected{% endif %}>
+                    Rejected
+                </option>
+            </select>
+        </div>
+
+        <div>
+            <label class="font-bold text-sm text-[#3b3a30] block mb-2">Authority Response</label>
+            <textarea
+                name="response"
+                rows="4"
+                placeholder="Type official response or update..."
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#3b3a30] text-sm transition duration-200"
+            >{{ post.authority_response or "" }}</textarea>
+        </div>
+
+        <div class="flex justify-end pt-2">
+            <button 
+                type="submit"
+                class="w-full sm:w-auto py-3 px-8 bg-[#3b3a30] hover:bg-[#2a2922] text-white font-semibold rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-[#3b3a30] transition duration-200 active:scale-[0.99] cursor-pointer"
+            >
+                Save
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endfor %}
+
+</main>
+
+<!-- Sticky Footer -->
+<footer class="bg-[#3b3a30] text-[#b2c2bf] py-6 mt-auto shadow-inner">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm">
+        <p>&copy; 2026 City Care Portal. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+
+</html>
